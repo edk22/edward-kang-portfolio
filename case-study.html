@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a0a" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<title>Case Study · Edward Kang</title>
+<meta name="description" content="Case study by Edward Kang — Senior Art Director and designer." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #0a0a0a;
+  --bg-2:      #111110;
+  --ink:       #efefe6;
+  --ink-mute:  #8a8a82;
+  --line:      #1f1f1d;
+  --accent:    #d6ff3d;
+  --accent-2:  #ff5b2e;
+  --serif:     "Fraunces", "Times New Roman", serif;
+  --sans:      "Inter Tight", system-ui, sans-serif;
+  --mono:      "JetBrains Mono", ui-monospace, monospace;
+  --easing:    cubic-bezier(.7,0,.2,1);
+  --easing-2:  cubic-bezier(.16,1,.3,1);
+  --gutter:    clamp(20px, 4vw, 56px);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+::selection { background: var(--accent); color: #000; }
+
+/* Grain overlay */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+  mix-blend-mode: overlay; opacity: .3;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1.6s steps(6) infinite;
+}
+@keyframes grain {
+  0%,100% { transform: translate(0,0) }
+  20% { transform: translate(-3%,2%) } 40% { transform: translate(2%,-4%) }
+  60% { transform: translate(-2%,3%) } 80% { transform: translate(3%,1%) }
+}
+
+/* Cursor */
+.cursor, .cursor-ghost {
+  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000;
+  mix-blend-mode: difference; transform: translate(-50%, -50%);
+}
+.cursor { width: 8px; height: 8px; background: var(--ink); border-radius: 50%; transition: width .25s, height .25s; }
+.cursor-ghost { width: 36px; height: 36px; border: 1px solid rgba(239,239,230,.55); border-radius: 50%; transition: width .35s, height .35s, border-color .35s, background .35s; }
+.cursor-ghost.is-hover { width: 80px; height: 80px; border-color: var(--accent); background: rgba(214,255,61,.06); }
+@media (hover: none), (pointer: coarse) { .cursor, .cursor-ghost { display: none; } }
+@media (hover: hover) and (pointer: fine) { body { cursor: none; } a, button { cursor: none; } }
+
+/* Nav */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px;
+  padding: 22px var(--gutter);
+  font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.nav .logo { color: var(--ink); display: inline-flex; align-items: center; gap: 12px; }
+.nav .logo .mark { width: 32px; height: 28px; color: var(--accent); transition: transform .6s var(--easing-2), filter .6s var(--easing-2); }
+.nav .logo:hover .mark { transform: rotate(-8deg) scale(1.08); filter: drop-shadow(0 0 14px rgba(214,255,61,.45)); }
+.nav .links { display: flex; gap: 28px; justify-self: center; }
+.nav .links a { position: relative; color: var(--ink); padding: 6px 2px; }
+.nav .links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 2px; height: 1px; background: var(--accent); transition: right .4s var(--easing-2); }
+.nav .links a:hover::after { right: 0; }
+.nav .right { justify-self: end; }
+.nav .back {
+  display: inline-flex; align-items: center; gap: 10px; color: var(--ink);
+  padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px;
+  transition: background .25s, color .25s, border-color .25s;
+}
+.nav .back:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+.nav .back svg { width: 10px; height: 10px; }
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--easing-2), transform .9s var(--easing-2); }
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* Case hero */
+.case-hero {
+  padding: clamp(120px, 18vw, 220px) var(--gutter) clamp(40px, 5vw, 80px);
+  display: grid; gap: 40px;
+}
+.case-meta-top {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  border-top: 1px solid var(--line); padding-top: 18px;
+  font: 500 11px/1.5 var(--mono); letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.case-meta-top b { display: block; color: var(--ink); font-family: var(--sans); font-size: 13px; letter-spacing: 0; text-transform: none; margin-bottom: 8px; font-weight: 500; }
+.case-num {
+  font: 500 11px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-mute);
+  display: inline-flex; align-items: center; gap: 12px;
+}
+.case-num::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+
+.case-hero h1 {
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(54px, 11vw, 180px); line-height: .9; letter-spacing: -.03em;
+}
+.case-hero h1 em { font-style: italic; color: var(--accent); }
+.case-lede {
+  font-family: var(--serif); font-weight: 300; font-style: italic;
+  font-size: clamp(20px, 2.4vw, 30px); line-height: 1.3;
+  max-width: 36ch;
+  color: var(--ink);
+}
+
+/* Big figure (image OR video) */
+.case-figure {
+  position: relative;
+  margin: 40px var(--gutter) clamp(60px, 8vw, 120px);
+  border-radius: 4px; overflow: hidden;
+  background: var(--bg-2);
+  display: grid; place-items: center;
+}
+.case-figure.image-only { aspect-ratio: 16 / 10; }
+.case-figure.image-only.portrait { aspect-ratio: 4 / 5; }
+.case-figure img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+
+/* Always render the iframe — toggle via .video class on the figure. */
+.case-figure iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: 0; display: none;
+}
+.case-figure.video { background: #000; padding: 0; }
+.case-figure.video iframe { display: block; }
+.case-figure.video img { display: none; }
+.case-figure.video.landscape { aspect-ratio: 16 / 9; }
+.case-figure.video.portrait {
+  aspect-ratio: auto;
+  max-width: 540px; margin-left: auto; margin-right: auto;
+  height: min(82vh, 920px);
+  width: auto;
+}
+.case-figure.video.portrait iframe { aspect-ratio: 9 / 16; }
+
+.case-figure .pill {
+  position: absolute; top: 18px; left: 18px; z-index: 3;
+  font: 500 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  background: rgba(10,10,10,.7); color: var(--ink); padding: 8px 10px;
+  backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.08);
+}
+.case-figure .ratio {
+  position: absolute; bottom: 18px; right: 18px; z-index: 3;
+  font: 500 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  background: rgba(10,10,10,.7); color: var(--ink-mute); padding: 8px 10px;
+  backdrop-filter: blur(6px);
+}
+.case-figure .play-cue {
+  position: absolute; left: 18px; bottom: 18px; z-index: 3;
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 500 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  background: var(--accent); color: #000; padding: 9px 12px;
+  text-decoration: none;
+  transition: transform .35s var(--easing-2), background .25s, color .25s;
+}
+.case-figure .play-cue:hover { background: #000; color: var(--accent); transform: translateX(4px); }
+.case-figure .play-cue[hidden] { display: none; }
+.case-figure .play-cue i {
+  width: 6px; height: 6px; border-radius: 50%; background: #000;
+  animation: pulse 2.4s var(--easing-2) infinite;
+}
+.case-figure .play-cue:hover i { background: var(--accent); animation: none; }
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(0,0,0,.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(0,0,0,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+}
+
+/* Body */
+.case-body {
+  display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px;
+  padding: 0 var(--gutter) clamp(80px, 12vw, 160px);
+  border-top: 1px solid var(--line);
+  padding-top: clamp(40px, 6vw, 90px);
+}
+.case-side { display: grid; gap: 24px; align-content: start; position: sticky; top: 90px; }
+.case-side .label {
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 500 11px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.case-side .label::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.case-side dl { display: grid; gap: 14px 24px; grid-template-columns: 1fr 1fr; }
+.case-side dt { color: var(--ink); font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+.case-side dd {
+  color: var(--ink-mute);
+  font: 500 11px/1.5 var(--mono); letter-spacing: .12em; text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.case-narr h2 {
+  font-family: var(--serif); font-weight: 300; font-style: italic;
+  font-size: clamp(28px, 3.4vw, 44px); line-height: 1; letter-spacing: -.01em;
+  margin-bottom: 24px;
+}
+.case-narr h2 em { font-style: normal; color: var(--accent); }
+.case-narr h2 + h2 { margin-top: 60px; }
+.case-narr p { color: var(--ink); font-size: 17px; line-height: 1.65; max-width: 60ch; margin-bottom: 18px; }
+.case-narr p + h2 { margin-top: 60px; }
+
+/* Next project teaser */
+.case-next {
+  border-top: 1px solid var(--line);
+  padding: clamp(60px, 8vw, 120px) var(--gutter);
+  display: grid; gap: 28px;
+}
+.case-next .label { font: 500 11px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--ink-mute); }
+.case-next a {
+  display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: end;
+  padding: clamp(40px, 6vw, 80px) 0;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  position: relative; isolation: isolate;
+  transition: padding-left .55s var(--easing-2), color .35s var(--easing-2);
+}
+.case-next a::before {
+  content: ""; position: absolute; inset: 0; background: var(--bg-2);
+  transform: scaleY(0); transform-origin: bottom; z-index: -1;
+  transition: transform .65s var(--easing-2);
+}
+.case-next a:hover { padding-left: 24px; color: var(--accent); }
+.case-next a:hover::before { transform: scaleY(1); transform-origin: top; }
+.case-next h2 {
+  font-family: var(--serif); font-weight: 300; font-style: italic;
+  font-size: clamp(40px, 8vw, 120px); line-height: .9; letter-spacing: -.03em;
+}
+.case-next .next-meta {
+  font: 500 11px/1.5 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-mute);
+}
+.case-next .next-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 12px; color: var(--ink);
+}
+.case-next .next-cta svg { width: 14px; height: 14px; transition: transform .4s var(--easing-2); }
+.case-next a:hover .next-cta svg { transform: translate(4px, -4px); }
+
+/* Footer */
+.foot-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px var(--gutter);
+  border-top: 1px solid var(--line);
+  font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-mute);
+  flex-wrap: wrap; gap: 12px;
+}
+.foot-bar a:hover { color: var(--accent); }
+
+/* Page transition (fade in on load, fade out on case-next click) */
+.page-fade { animation: pgIn .9s var(--easing-2) both; }
+@keyframes pgIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+body.is-leaving { animation: pgOut .45s var(--easing) both; }
+@keyframes pgOut { to { opacity: 0; transform: translateY(-12px); } }
+
+@media (max-width: 1024px) {
+  .case-meta-top { grid-template-columns: 1fr 1fr; row-gap: 28px; }
+  .case-body { grid-template-columns: 1fr; gap: 40px; padding-top: clamp(30px, 4vw, 60px); }
+  .case-side { position: static; }
+  .case-next a { grid-template-columns: 1fr; gap: 24px; }
+  .case-next h2 { font-size: clamp(40px, 12vw, 88px); }
+}
+@media (max-width: 720px) {
+  .nav .links { display: none; }
+  .case-meta-top { grid-template-columns: 1fr 1fr; gap: 18px; }
+  .case-side dl { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  .reveal { opacity: 1; transform: none; }
+  .grain { animation: none; }
+}
+</style>
+</head>
+
+<body class="page-fade">
+
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ghost" aria-hidden="true"></div>
+
+<nav class="nav" aria-label="Primary">
+  <a class="logo" href="index.html" aria-label="Edward Kang — home">
+    <svg class="mark" viewBox="0 0 387 330" fill="currentColor" aria-hidden="true">
+      <path d="M135 3.7032e-10C172.142 -6.349e-05 194.912 8.16381 222 18.7881C230.661 22.1851 241.5 27.0469 248.691 29.5469C249.609 29.0333 250.545 28.5178 251.5 28C288.389 8.00008 328 8 338 8C348 8 380.3 10 385.5 23C390.7 36 356 47 336 47.5C318.505 47.9374 299.187 47.4028 256.04 34.417C239.562 45.5627 220.5 62.0003 224.5 84.5C228.5 107 252.5 112 278 113V114.5C159 114 91 190.5 92.5 245.5C93.4696 281.053 117.84 290.908 136.843 293.297C132.57 285.961 129.684 277.028 129.5 266C128.958 233.5 157.687 192.515 182.5 175C215.5 151.706 243.5 142 278 142C310.514 142 323 151 329.5 162C335.685 172.466 341.5 203.5 299 247C268.756 277.956 228.5 299.087 149.619 296.401C157.212 311.325 177 331.5 212 329.5C247 327.5 258.5 308.5 259.5 307C260.5 305.5 264.5 307 262.5 310C260.5 313 244 325.5 220.5 329C202.142 331.734 178.5 328.5 164.5 319.5C156.196 314.162 145.605 306.888 138.258 295.593C77.497 288.846 72 246.382 72 233.5C72 213 84.0351 175.151 129.5 145.5C175.5 115.5 239.5 113 248.5 113.5C223.5 111 207 99.4999 205 84.5C203 69.5001 209.221 52.5552 245.5 31.5C232.601 27.3528 222.323 23.1371 209.5 18.7881C197.565 14.7403 170.847 2.09745 135 1.5C103.818 0.980305 67 20.1658 45.5 39.833C24.0001 59.5002 5.4803 87.3038 5 113C4.31505 149.645 28.7495 160.802 46.043 162.417C43.5539 160.049 42 156.707 42 153C42 145.82 47.8203 140 55 140C62.1797 140 68 145.82 68 153C68 160.18 62.1797 166 55 166C54.8319 166 54.6646 165.996 54.498 165.989L54.5 166C17 165 0 137.5 0 109C4.63884e-10 80.5001 17.8457 51.1518 42.5 31.2158C67.5 11.0003 105.983 4.9603e-05 135 3.7032e-10ZM329.5 166C318.5 135.5 248.5 134.5 205 168.5C159.988 203.682 143.5 245.5 143.5 268C143.5 275.74 144.561 285.594 148.5 294.5C199 298 244.79 281.738 278 256C298 240.5 340.68 197 329.5 166ZM381.5 23C378.5 9.5 344.5 7.98842 323.5 10C312.836 11.0215 286.209 15.2067 258.501 32.8037C298.826 45.5076 314.01 48.3127 337.5 46.5C348 45.6897 384.32 35.6904 381.5 23Z"/>
+    </svg>
+    <span>Edward Kang ©</span>
+  </a>
+  <div class="links">
+    <a href="index.html#showreel">Showreel</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+  <div class="right">
+    <a class="back" href="index.html">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 1 L1 5 L6 9 M1 5 H9"/></svg>
+      Index
+    </a>
+  </div>
+</nav>
+
+<article>
+  <header class="case-hero">
+    <div class="reveal">
+      <span class="case-num" id="kNum">№ 01 / 11</span>
+    </div>
+    <h1 class="reveal" id="kTitle">Project</h1>
+    <p class="case-lede reveal" id="kLede">Loading project…</p>
+
+    <div class="case-meta-top reveal">
+      <div><b>Client</b><span id="kClient"></span></div>
+      <div><b>Year</b><span id="kYear"></span></div>
+      <div><b>Type</b><span id="kType"></span></div>
+      <div><b>Role</b><span id="kRole"></span></div>
+    </div>
+  </header>
+
+  <figure class="case-figure reveal" id="kFigure">
+    <span class="pill" id="kPill">Featured Image</span>
+    <img id="kImg" alt="" />
+    <iframe id="kVideo" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture; fullscreen; accelerometer; gyroscope" allowfullscreen title="Project video"></iframe>
+    <span class="ratio" id="kRatio">16 : 10</span>
+    <a class="play-cue" id="kPlayCue" href="#" target="_blank" rel="noopener" hidden><i></i>Watch on YouTube ↗</a>
+  </figure>
+
+  <div class="case-body">
+    <aside class="case-side">
+      <span class="label">Project Brief</span>
+      <dl>
+        <div><dt>Client</dt><dd id="sClient"></dd></div>
+        <div><dt>Year</dt><dd id="sYear"></dd></div>
+        <div><dt>Type</dt><dd id="sType"></dd></div>
+        <div><dt>Role</dt><dd id="sRole"></dd></div>
+        <div style="grid-column:1/-1"><dt>Output</dt><dd id="sOutput"></dd></div>
+      </dl>
+    </aside>
+
+    <div class="case-narr">
+      <h2><em>01.</em> Approach</h2>
+      <p id="kApproach"></p>
+
+      <h2><em>02.</em> Outcome</h2>
+      <p id="kOutcome"></p>
+    </div>
+  </div>
+
+  <section class="case-next">
+    <span class="label">Next Project · 010</span>
+    <a id="nextLink" href="#">
+      <div>
+        <span class="next-meta" id="nextMeta">— · ——</span>
+        <h2 id="nextTitle">Next</h2>
+      </div>
+      <div>
+        <span class="next-cta">View case study
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 L11 3 M5 3 H11 V9"/></svg>
+        </span>
+      </div>
+    </a>
+  </section>
+</article>
+
+<div class="foot-bar">
+  <span>© 2026 Edward Kang · Case Studies · v.04</span>
+  <div style="display:flex;gap:20px">
+    <a href="index.html">Index ↗</a>
+    <a href="mailto:edwardekang@gmail.com">edwardekang@gmail.com ↗</a>
+  </div>
+</div>
+
+<script src="projects.js"></script>
+<script>
+(() => {
+  const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Cursor */
+  if (fine) {
+    const dot = document.querySelector(".cursor");
+    const ghost = document.querySelector(".cursor-ghost");
+    let mx = innerWidth/2, my = innerHeight/2, gx = mx, gy = my;
+    addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`; }, { passive: true });
+    (function loop() { gx += (mx - gx) * .18; gy += (my - gy) * .18; ghost.style.transform = `translate(${gx}px, ${gy}px) translate(-50%,-50%)`; requestAnimationFrame(loop); })();
+    document.querySelectorAll("a, button").forEach(el => {
+      el.addEventListener("pointerenter", () => ghost.classList.add("is-hover"));
+      el.addEventListener("pointerleave", () => ghost.classList.remove("is-hover"));
+    });
+  }
+
+  /* Reveal */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
+  }, { threshold: .12, rootMargin: "0px 0px -8% 0px" });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+  /* Read project from query */
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id") || "lyriq";
+  const data = window.PROJECTS[id];
+
+  if (!data) {
+    location.replace("404.html?id=" + encodeURIComponent(id));
+    return;
+  }
+
+  document.title = data.title + " — Edward Kang";
+
+  // Hero
+  document.getElementById("kNum").textContent     = "№ " + data.num + " / " + String(window.PROJECT_ORDER.length).padStart(2,"0") + "  ·  " + data.year;
+  document.getElementById("kTitle").innerHTML     = data.title.replace(/(\b\w+\b)$/, "<em>$1</em>");
+  document.getElementById("kLede").textContent    = data.copy;
+  document.getElementById("kClient").textContent  = data.client;
+  document.getElementById("kYear").textContent    = data.year;
+  document.getElementById("kType").textContent    = data.type;
+  document.getElementById("kRole").textContent    = data.role;
+
+  // Hero figure — video if available, image otherwise
+  const fig    = document.getElementById("kFigure");
+  const kImg   = document.getElementById("kImg");
+  const kVideo = document.getElementById("kVideo");
+  const kCue   = document.getElementById("kPlayCue");
+
+  if (data.aspect === "portrait") fig.classList.add("portrait");
+  else fig.classList.add("landscape");
+
+  if (data.video) {
+    // Reveal iframe via class FIRST, then mount src — avoids racing the autoplay grant
+    fig.classList.add("video");
+    kCue.hidden = false;
+    kCue.setAttribute("href", "https://www.youtube.com/watch?v=" + data.video);
+    kVideo.src = window.YT_EMBED(data.video, { autoplay: false });
+  } else {
+    fig.classList.add("image-only");
+    kCue.hidden = true;
+    kImg.src = data.img;
+    kImg.alt = data.title;
+  }
+  document.getElementById("kPill").textContent = data.client + " · " + data.type;
+  document.getElementById("kRatio").textContent = data.aspect === "portrait" ? "Portrait · 9 : 16" : "Landscape · 16 : 9";
+
+  // Sidebar
+  document.getElementById("sClient").textContent  = data.client;
+  document.getElementById("sYear").textContent    = data.year;
+  document.getElementById("sType").textContent    = data.type;
+  document.getElementById("sRole").textContent    = data.role;
+  document.getElementById("sOutput").textContent  = data.output;
+
+  // Narrative
+  document.getElementById("kApproach").textContent = data.approach;
+  document.getElementById("kOutcome").textContent  = data.outcome;
+
+  // Next project
+  const order = window.PROJECT_ORDER;
+  const idx   = order.indexOf(id);
+  const next  = window.PROJECTS[order[(idx + 1) % order.length]];
+  document.getElementById("nextLink").setAttribute("href", "case-study.html?id=" + order[(idx + 1) % order.length]);
+  document.getElementById("nextMeta").textContent  = next.client + " · " + next.year;
+  document.getElementById("nextTitle").textContent = next.title;
+
+  // page-leave transition for in-site links
+  if (!reduce) {
+    document.querySelectorAll('a[href]').forEach(a => {
+      const href = a.getAttribute("href");
+      if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:") || a.target === "_blank") return;
+      a.addEventListener("click", (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+        e.preventDefault();
+        document.body.classList.add("is-leaving");
+        setTimeout(() => { location.href = href; }, 350);
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
