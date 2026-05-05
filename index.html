@@ -857,6 +857,8 @@ section { padding: clamp(80px, 12vw, 180px) var(--gutter); position: relative; }
 /* ─── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .hero-meta { grid-template-columns: 1fr 1fr; row-gap: 28px; }
+  .hero-tag  { grid-template-columns: 1fr; gap: 24px; }
+  .hero-tag .scroll-cue { justify-self: start; }
   .index-row { grid-template-columns: 40px 1.4fr 1fr 80px; }
   .index-row .type { display: none; }
   .featured { grid-template-columns: 1fr; }
@@ -870,8 +872,12 @@ section { padding: clamp(80px, 12vw, 180px) var(--gutter); position: relative; }
   .tile-w4 { grid-column: span 6; aspect-ratio: 4 / 5; }
   .tile-w6 { grid-column: span 6; }
   .tile-w8 { grid-column: span 12; aspect-ratio: 16 / 9; }
+  /* Foot bar: drop into a column so the items have room to breathe. */
+  .foot-bar { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .foot-bar .right { gap: 24px; }
 }
 @media (max-width: 720px) {
+  .hide-mobile { display: none !important; }
   .nav .links { display: none; }
   .hero-meta { grid-template-columns: 1fr 1fr; gap: 18px; }
   .index-row { grid-template-columns: 30px 1.2fr 60px; padding: 20px 4px; }
@@ -883,6 +889,8 @@ section { padding: clamp(80px, 12vw, 180px) var(--gutter); position: relative; }
   .contact-grid { grid-template-columns: 1fr 1fr; }
   .preview { display: none; }
   .tile-w4, .tile-w6, .tile-w8, .tile-w12 { grid-column: span 12; aspect-ratio: 16 / 10; }
+  /* Tighter mobile gutters */
+  .foot-bar { padding: 22px var(--gutter); gap: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
@@ -1345,10 +1353,10 @@ section { padding: clamp(80px, 12vw, 180px) var(--gutter); position: relative; }
   </div>
 
   <div class="foot-bar">
-    <span>© 2026 Edward Kang · All work and no play.</span>
+    <span>© 2026 Edward Kang<span class="hide-mobile"> · All work and no play.</span></span>
     <div class="right">
       <a href="#top">Back to top ↑</a>
-      <span>v.04 · Built 2026</span>
+      <span class="hide-mobile">v.04 · Built 2026</span>
     </div>
   </div>
 </section>
