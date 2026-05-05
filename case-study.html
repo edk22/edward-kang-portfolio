@@ -351,11 +351,16 @@ img, svg { display: block; max-width: 100%; }
 }
 .foot-bar a:hover { color: var(--accent); }
 
-/* Page transition (fade in on load, fade out on case-next click) */
-.page-fade { animation: pgIn .9s var(--easing-2) both; }
-@keyframes pgIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-body.is-leaving { animation: pgOut .45s var(--easing) both; }
-@keyframes pgOut { to { opacity: 0; transform: translateY(-12px); } }
+/* Page transition (fade in on load, fade out on case-next click).
+   IMPORTANT: opacity-only — never apply transform to <body>. Any transform on
+   body (even transform: none retained by animation-fill-mode: both) promotes
+   body to be the containing block for fixed-positioned children, which would
+   break the custom cursor: it would scroll with the page instead of staying
+   viewport-fixed, and disappear once the user scrolls past where it was set. */
+.page-fade { animation: pgIn .6s var(--easing-2) both; }
+@keyframes pgIn { from { opacity: 0; } to { opacity: 1; } }
+body.is-leaving { animation: pgOut .35s var(--easing) both; }
+@keyframes pgOut { to { opacity: 0; } }
 
 @media (max-width: 1024px) {
   .case-meta-top { grid-template-columns: 1fr 1fr; row-gap: 28px; }
