@@ -549,9 +549,24 @@ body.is-leaving { animation: pgOut .45s var(--easing) both; }
     kCue.hidden = false;
     kCue.setAttribute("href", "https://www.youtube.com/watch?v=" + data.video);
     kVideo.src = window.YT_EMBED(data.video, { autoplay: false });
-    // Restore OS cursor while pointer is over the video figure
-    fig.addEventListener("mouseenter", () => document.body.classList.add("over-video"));
-    fig.addEventListener("mouseleave", () => document.body.classList.remove("over-video"));
+
+    /* Cursor state needs a recompute on scroll, not just on mouseenter/leave.
+       Once the pointer enters the YouTube iframe, pointer events stop reaching
+       the parent — so mouseleave never fires when the figure scrolls offscreen,
+       and the body.over-video class stays stuck on (hiding the brand cursor).
+       Solution: track the last pointer position and recompute on every scroll. */
+    let lastX = innerWidth / 2, lastY = innerHeight / 2;
+    const syncOverVideo = () => {
+      const r = fig.getBoundingClientRect();
+      const inside = lastX >= r.left && lastX <= r.right && lastY >= r.top && lastY <= r.bottom;
+      document.body.classList.toggle("over-video", inside);
+    };
+    addEventListener("pointermove", (e) => {
+      lastX = e.clientX; lastY = e.clientY;
+      syncOverVideo();
+    }, { passive: true });
+    addEventListener("scroll", syncOverVideo, { passive: true });
+    addEventListener("resize",  syncOverVideo, { passive: true });
   } else {
     fig.classList.add("image-only");
     kCue.hidden = true;
