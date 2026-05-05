@@ -9,3 +9,7 @@ node_modules/
 # browser auto-save artifacts
 index_files/
 *.html.bak
+# unrelated / reference-only assets
+assets/work/DS OFood Website/
+assets/work/e-logo-ref.png
+assets/work/E-logo.svg

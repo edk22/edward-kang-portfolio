@@ -4,8 +4,8 @@
    ============================================================= */
 window.PROJECT_ORDER = [
   "lyriq", "sabio", "iglive", "poker", "llbean",
-  "sbux",  "sbuxo", "sbuxr",
-  "sephora", "adgallery", "logos"
+  "sbux",  "sbuxr",
+  "sephora", "adgallery", "dsofood", "logos"
 ];
 
 window.PROJECTS = {
@@ -111,25 +111,8 @@ window.PROJECTS = {
     outcome: "Ran across publisher inventory through the seasonal campaign window."
   },
 
-  sbuxo: {
-    num: "07",
-    title: "Starbucks Order",
-    client: "Starbucks",
-    year: "2022",
-    type: "Mobile Rich Media",
-    role: "Senior Designer",
-    output: "Mobile rich-media unit · Order flow concept",
-    color: "#161a0a", tint: "#e6cb4d",
-    img: "assets/work/sbuxm.png",
-    video: "JxZgttlvCXA",
-    aspect: "portrait",
-    copy: "An ad-as-product moment for Starbucks — a mobile rich-media unit that previews the in-app order flow inline, letting viewers browse the menu without leaving the publisher.",
-    approach: "Designed the unit to mimic the in-app order experience while staying ad-safe. Modular product cards, smooth tap interactions, and a tight Starbucks-green palette let the unit read as utility, not advertising.",
-    outcome: "Shipped across mobile inventory; tested as a benchmark unit for product-led mobile rich media."
-  },
-
   sbuxr: {
-    num: "08",
+    num: "07",
     title: "Starbucks Rewards",
     client: "Starbucks",
     year: "2022",
@@ -146,7 +129,7 @@ window.PROJECTS = {
   },
 
   sephora: {
-    num: "09",
+    num: "08",
     title: "Sephora · Mobile",
     client: "Sephora",
     year: "2021",
@@ -163,7 +146,7 @@ window.PROJECTS = {
   },
 
   adgallery: {
-    num: "10",
+    num: "09",
     title: "Sabio Ad Gallery",
     client: "Sabio, Inc",
     year: "2024",
@@ -177,6 +160,23 @@ window.PROJECTS = {
     copy: "A public gallery for Sabio's connected-TV and rich-media work — built as a design-led showcase that lets prospects browse units in-context.",
     approach: "Combined a mosaic of scroll-loaded video and image previews with project metadata that opens into a deeper case-view. Designed for press, prospects and recruiting in equal measure.",
     outcome: "Live at gallery.sabio.inc — used in sales pitches and inbound recruiting."
+  },
+
+  dsofood: {
+    num: "10",
+    title: "DS OFood",
+    client: "DS OFood",
+    year: "2026 · in progress",
+    type: "Website Design",
+    role: "Designer · Direction",
+    output: "Brand audit · Site refresh · Design system",
+    color: "#10140e", tint: "#d6ff3d",
+    img: "assets/work/dsofood.png",
+    video: null,
+    aspect: "wide",
+    copy: "DS OFood is a New York food brand. The current website is overdue for a major refresh — typography, layout, and motion all need a 2026-pass to match where the brand is heading.",
+    approach: "Auditing the current site's hierarchy, then translating the brand into a tighter editorial system: confident type pairing, an honest grid, and considered motion that reads as poised rather than busy. Working from the iPad Pro layouts inward to mobile — photography-led, typographically-led when product is the hero.",
+    outcome: "In progress. Currently iterating on direction with the brand team — refresh targeted for late 2026."
   },
 
   logos: {
