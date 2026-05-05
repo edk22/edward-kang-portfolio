@@ -30,17 +30,20 @@ window.PROJECTS = {
     num: "02",
     title: "Sabio CTV",
     client: "Sabio, Inc",
-    year: "2024",
+    year: "2025",
     type: "Brand · Web · CTV",
     role: "Senior Art Director",
-    output: "Brand site · Connected-TV reel · Design system",
+    output: "Brand identity · Marketing site · CTV showcase",
     color: "#0f1c2e", tint: "#d6ff3d",
     img: "assets/work/sabio.png",
-    video: "lbWdJ8sbjHU",
+    video: "iGbChrW3g34",
     aspect: "wide",
-    copy: "Lead art direction on the Sabio brand surface — connecting the marketing site, connected-TV showcase, and product visuals under a single design system.",
-    approach: "Started from a typographic system that could carry the editorial weight of the company's heritage while flexing for product-marketing pages and CTV showreel. Worked with engineering on motion principles, scroll-triggered reveals, and the type hierarchy that runs from hero to footer.",
-    outcome: "Live at sabio.inc — the platform anchor for two product launches, the 2024 ad-gallery release, and the company's connected-TV pitch reel."
+    gallery: [
+      { src: "assets/work/sabio-2.png", caption: "Marketing surface · scroll-driven brand moments" }
+    ],
+    copy: "A brand-and-web build for Sabio, Inc — with diversity as the core concept. Designed as a colorful, fun, and tech-forward surface that starts with branding and flexes across the marketing site and connected-TV showreel.",
+    approach: "Started from the brand: a flexible identity system built around inclusion and a wide-spectrum palette, then translated that into a typographic and motion system the marketing site could lean on. Worked with engineering on scroll-driven reveals, component motion, and a type hierarchy that runs cleanly from hero to footer. Same logic carries into the connected-TV showreel — same components, same brand voice, different surface.",
+    outcome: "Live at sabio.inc — the platform anchor for product launches, the 2024 ad-gallery release, and Sabio's connected-TV pitch reel. Internally, the brand system has held up across new pages and product moments without needing a redo."
   },
 
   iglive: {
