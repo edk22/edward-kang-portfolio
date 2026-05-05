@@ -166,17 +166,21 @@ window.PROJECTS = {
     num: "10",
     title: "DS OFood",
     client: "DS OFood",
-    year: "2026 · in progress",
+    year: "2026",
     type: "Website Design",
     role: "Designer · Direction",
-    output: "Brand audit · Site refresh · Design system",
+    output: "Website redesign · Visual system · CMS hand-off",
     color: "#10140e", tint: "#d6ff3d",
     img: "assets/work/dsofood.png",
     video: null,
     aspect: "wide",
-    copy: "DS OFood is a New York food brand. The current website is overdue for a major refresh — typography, layout, and motion all need a 2026-pass to match where the brand is heading.",
-    approach: "Auditing the current site's hierarchy, then translating the brand into a tighter editorial system: confident type pairing, an honest grid, and considered motion that reads as poised rather than busy. Working from the iPad Pro layouts inward to mobile — photography-led, typographically-led when product is the hero.",
-    outcome: "In progress. Currently iterating on direction with the brand team — refresh targeted for late 2026."
+    gallery: [
+      { src: "assets/work/dsofood-2.png", caption: "Editorial product page · refined type pairing" },
+      { src: "assets/work/dsofood-3.png", caption: "Self-maintained CMS · the team ships their own updates" }
+    ],
+    copy: "A complete website redesign for DS OFood — replacing a dated, hard-to-update template with a clean editorial system the team can maintain themselves.",
+    approach: "Started with a content audit: the previous site had hierarchy debt, brittle templates, and no path to update without engineering. The new direction translates the brand into a tighter typographic system — confident type pairing, an honest grid, and photography-forward layouts that read clearly across breakpoints. Built on a CMS the team can extend on their own, with documented components, named layouts, and patterns that compose without breaking.",
+    outcome: "Live and self-maintained. The DS OFood team now ships menu updates, seasonal content and product changes themselves — no designer or developer required. The client is genuinely happy with both the visual direction and the day-to-day maintainability."
   },
 
   logos: {

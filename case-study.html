@@ -214,6 +214,60 @@ img, svg { display: block; max-width: 100%; }
 .case-narr p { color: var(--ink); font-size: 17px; line-height: 1.65; max-width: 60ch; margin-bottom: 18px; }
 .case-narr p + h2 { margin-top: 60px; }
 
+/* Gallery (additional images) */
+.case-gallery {
+  padding: clamp(20px, 3vw, 40px) var(--gutter) clamp(60px, 8vw, 120px);
+}
+.case-gallery .gallery-head {
+  display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px;
+  border-top: 1px solid var(--line); padding-top: 36px; margin-bottom: 36px;
+}
+.case-gallery h2 {
+  font-family: var(--serif); font-weight: 300; font-style: italic;
+  font-size: clamp(28px, 4vw, 48px); line-height: 1; letter-spacing: -.02em;
+}
+.case-gallery .label {
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 500 11px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.case-gallery .label::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.gallery-grid {
+  display: grid; gap: 24px;
+  grid-template-columns: 1fr;
+}
+.gallery-grid figure {
+  position: relative;
+  border-radius: 4px; overflow: hidden;
+  background: var(--bg-2);
+  aspect-ratio: 4 / 3;
+  isolation: isolate;
+}
+.gallery-grid figure img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  transition: transform 1.2s var(--easing-2), filter .6s var(--easing-2);
+  filter: saturate(.95) brightness(.96);
+}
+.gallery-grid figure:hover img { transform: scale(1.03); filter: saturate(1.05) brightness(1); }
+.gallery-grid figcaption {
+  position: absolute; left: 16px; bottom: 16px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 500 10px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink); padding: 8px 10px;
+  background: rgba(10,10,10,.7); backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.06);
+  max-width: calc(100% - 32px);
+}
+.gallery-grid figcaption::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0;
+}
+@media (min-width: 900px) {
+  .gallery-grid.has-2 { grid-template-columns: 1fr 1fr; }
+  .gallery-grid.has-3 { grid-template-columns: repeat(3, 1fr); }
+}
+.case-gallery[hidden] { display: none; }
+
 /* Next project teaser */
 .case-next {
   border-top: 1px solid var(--line);
@@ -357,6 +411,14 @@ body.is-leaving { animation: pgOut .45s var(--easing) both; }
     </div>
   </div>
 
+  <section class="case-gallery reveal" id="kGallery" hidden>
+    <header class="gallery-head">
+      <span class="label" id="kGalleryLabel">Selected Frames · 005</span>
+      <h2><em>The new site,</em> in detail.</h2>
+    </header>
+    <div class="gallery-grid" id="kGalleryGrid"></div>
+  </section>
+
   <section class="case-next">
     <span class="label">Next Project · 010</span>
     <a id="nextLink" href="#">
@@ -461,6 +523,20 @@ body.is-leaving { animation: pgOut .45s var(--easing) both; }
   // Narrative
   document.getElementById("kApproach").textContent = data.approach;
   document.getElementById("kOutcome").textContent  = data.outcome;
+
+  // Gallery — only renders if the project has additional images
+  if (Array.isArray(data.gallery) && data.gallery.length) {
+    const gallery = document.getElementById("kGallery");
+    const grid    = document.getElementById("kGalleryGrid");
+    grid.classList.add("has-" + data.gallery.length);
+    grid.innerHTML = data.gallery.map((g, i) => {
+      const o = (typeof g === "string") ? { src: g } : g;
+      const alt = o.alt || (data.title + " — frame " + (i + 2));
+      const cap = o.caption ? `<figcaption>${o.caption}</figcaption>` : "";
+      return `<figure><img src="${o.src}" alt="${alt}" loading="lazy" />${cap}</figure>`;
+    }).join("");
+    gallery.hidden = false;
+  }
 
   // Next project
   const order = window.PROJECT_ORDER;
