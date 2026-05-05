@@ -1379,6 +1379,9 @@ section { padding: clamp(80px, 12vw, 180px) var(--gutter); position: relative; }
         <a id="modalLink" class="cta" href="#">Open Case Study
           <svg class="arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 L11 3 M5 3 H11 V9"/></svg>
         </a>
+        <a id="modalSiteLink" class="cta ghost" href="#" target="_blank" rel="noopener" hidden><span id="modalSiteLabel">Visit Site</span>
+          <svg class="arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 L11 3 M5 3 H11 V9"/></svg>
+        </a>
         <a id="modalYTLink" class="cta ghost" href="#" target="_blank" rel="noopener" hidden>Watch on YouTube
           <svg class="arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 L11 3 M5 3 H11 V9"/></svg>
         </a>
@@ -1627,6 +1630,11 @@ section { padding: clamp(80px, 12vw, 180px) var(--gutter); position: relative; }
   const modalOutput = document.getElementById("modalOutput");
   const modalLink   = document.getElementById("modalLink");
   const modalYTLink = document.getElementById("modalYTLink");
+  const modalSite   = document.getElementById("modalSiteLink");
+  const modalSiteLb = document.getElementById("modalSiteLabel");
+
+  // Strip protocol + trailing slash for display
+  const prettyUrl = (u) => u.replace(/^https?:\/\//i, "").replace(/\/$/, "");
   const modalPrev   = document.getElementById("modalPrev");
   const modalNext   = document.getElementById("modalNext");
   const modalCounter= document.getElementById("modalCounter");
@@ -1676,6 +1684,16 @@ section { padding: clamp(80px, 12vw, 180px) var(--gutter); position: relative; }
     modalOutput.textContent  = data.output;
     modalLink.setAttribute("href", "case-study.html?id=" + slug);
     modalCounter.textContent = String(modalIdx + 1).padStart(2,"0") + " / " + String(TOTAL).padStart(2,"0");
+
+    // Live-site CTA — only shows when the project has a public URL
+    if (data.url) {
+      modalSite.hidden = false;
+      modalSite.setAttribute("href", data.url);
+      modalSiteLb.textContent = prettyUrl(data.url);
+    } else {
+      modalSite.hidden = true;
+      modalSite.setAttribute("href", "#");
+    }
   }
 
   function openModal(slug) {

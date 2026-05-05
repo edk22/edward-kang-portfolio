@@ -128,6 +128,27 @@ img, svg { display: block; max-width: 100%; }
   color: var(--ink);
 }
 
+/* Hero actions — Visit Site CTA */
+.case-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.case-actions[hidden] { display: none; }
+.case-actions .cta {
+  display: inline-flex; align-items: center; gap: 12px;
+  font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink); padding: 16px 22px;
+  border: 1px solid var(--accent); border-radius: 999px;
+  position: relative; overflow: hidden; isolation: isolate;
+  background: var(--accent); color: #000;
+  transition: transform .35s var(--easing-2), background .25s, color .25s, padding-right .35s var(--easing-2);
+}
+.case-actions .cta svg { width: 14px; height: 14px; transition: transform .35s var(--easing-2); }
+.case-actions .cta:hover { transform: translateY(-2px); padding-right: 26px; }
+.case-actions .cta:hover svg { transform: translate(3px, -3px); }
+.case-actions .cta-label-host {
+  font-family: var(--serif); font-weight: 300; font-style: italic;
+  font-size: 18px; letter-spacing: -.01em; text-transform: none;
+  margin-left: 4px;
+}
+
 /* Big figure (image OR video) */
 .case-figure {
   position: relative;
@@ -212,6 +233,13 @@ img, svg { display: block; max-width: 100%; }
   font: 500 11px/1.5 var(--mono); letter-spacing: .12em; text-transform: uppercase;
   margin-bottom: 18px;
 }
+.case-side dd .brief-link {
+  color: var(--accent);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: opacity .25s;
+}
+.case-side dd .brief-link:hover { opacity: .7; }
 
 .case-narr h2 {
   font-family: var(--serif); font-weight: 300; font-style: italic;
@@ -383,6 +411,13 @@ body.is-leaving { animation: pgOut .45s var(--easing) both; }
     <h1 class="reveal" id="kTitle">Project</h1>
     <p class="case-lede reveal" id="kLede">Loading project…</p>
 
+    <div class="case-actions reveal" id="kActions" hidden>
+      <a id="kLiveCta" class="cta" href="#" target="_blank" rel="noopener">
+        Visit Site<span class="cta-label-host" id="kLiveHost"></span>
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 L11 3 M5 3 H11 V9"/></svg>
+      </a>
+    </div>
+
     <div class="case-meta-top reveal">
       <div><b>Client</b><span id="kClient"></span></div>
       <div><b>Year</b><span id="kYear"></span></div>
@@ -408,6 +443,7 @@ body.is-leaving { animation: pgOut .45s var(--easing) both; }
         <div><dt>Type</dt><dd id="sType"></dd></div>
         <div><dt>Role</dt><dd id="sRole"></dd></div>
         <div style="grid-column:1/-1"><dt>Output</dt><dd id="sOutput"></dd></div>
+        <div style="grid-column:1/-1" id="sLiveAtWrap" hidden><dt>Live at</dt><dd><a id="sLiveAt" class="brief-link" href="#" target="_blank" rel="noopener"></a></dd></div>
       </dl>
     </aside>
 
@@ -531,6 +567,23 @@ body.is-leaving { animation: pgOut .45s var(--easing) both; }
   document.getElementById("sType").textContent    = data.type;
   document.getElementById("sRole").textContent    = data.role;
   document.getElementById("sOutput").textContent  = data.output;
+
+  // Live URL — show CTA in hero + "Live at" row in brief sidebar
+  const prettyUrl = (u) => u.replace(/^https?:\/\//i, "").replace(/\/$/, "");
+  if (data.url) {
+    const actions = document.getElementById("kActions");
+    const cta     = document.getElementById("kLiveCta");
+    const host    = document.getElementById("kLiveHost");
+    cta.href = data.url;
+    host.textContent = " · " + prettyUrl(data.url);
+    actions.hidden = false;
+
+    const wrap = document.getElementById("sLiveAtWrap");
+    const a    = document.getElementById("sLiveAt");
+    a.href = data.url;
+    a.textContent = prettyUrl(data.url) + " ↗";
+    wrap.hidden = false;
+  }
 
   // Narrative
   document.getElementById("kApproach").textContent = data.approach;
