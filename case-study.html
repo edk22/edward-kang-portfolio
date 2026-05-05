@@ -58,7 +58,16 @@ img, svg { display: block; max-width: 100%; }
 .cursor-ghost { width: 36px; height: 36px; border: 1px solid rgba(239,239,230,.55); border-radius: 50%; transition: width .35s, height .35s, border-color .35s, background .35s; }
 .cursor-ghost.is-hover { width: 80px; height: 80px; border-color: var(--accent); background: rgba(214,255,61,.06); }
 @media (hover: none), (pointer: coarse) { .cursor, .cursor-ghost { display: none; } }
-@media (hover: hover) and (pointer: fine) { body { cursor: none; } a, button { cursor: none; } }
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+  a, button { cursor: none; }
+  /* Restore OS cursor over the video figure — the iframe captures pointer
+     events so the custom cursor freezes at the iframe boundary. */
+  body.over-video { cursor: auto; }
+  body.over-video a, body.over-video button { cursor: pointer; }
+  body.over-video .cursor,
+  body.over-video .cursor-ghost { display: none; }
+}
 
 /* Nav */
 .nav {
@@ -504,6 +513,9 @@ body.is-leaving { animation: pgOut .45s var(--easing) both; }
     kCue.hidden = false;
     kCue.setAttribute("href", "https://www.youtube.com/watch?v=" + data.video);
     kVideo.src = window.YT_EMBED(data.video, { autoplay: false });
+    // Restore OS cursor while pointer is over the video figure
+    fig.addEventListener("mouseenter", () => document.body.classList.add("over-video"));
+    fig.addEventListener("mouseleave", () => document.body.classList.remove("over-video"));
   } else {
     fig.classList.add("image-only");
     kCue.hidden = true;

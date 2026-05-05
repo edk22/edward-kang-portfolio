@@ -100,7 +100,21 @@ img, svg { display: block; max-width: 100%; }
 .cursor-ghost.is-hover { width: 80px; height: 80px; border-color: var(--accent); background: rgba(214,255,61,.06); }
 .cursor-ghost.is-text  { width: 4px;  height: 26px; border-radius: 2px; border-color: var(--ink); background: var(--ink); }
 @media (hover: none), (pointer: coarse) { .cursor, .cursor-ghost { display: none; } body { cursor: auto; } }
-@media (hover: hover) and (pointer: fine) { body { cursor: none; } a, button { cursor: none; } }
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+  a, button { cursor: none; }
+  /* When the lightbox is open, restore the OS cursor so the user can
+     interact with YouTube's controls, modal nav, and close button —
+     the custom cursor also freezes when entering an iframe. */
+  body.modal-open,
+  body.modal-open a,
+  body.modal-open button,
+  body.modal-open input,
+  body.modal-open iframe { cursor: auto; }
+  body.modal-open a, body.modal-open button { cursor: pointer; }
+  body.modal-open .cursor,
+  body.modal-open .cursor-ghost { display: none; }
+}
 
 /* ─── Loader ───────────────────────────────────────────────────────── */
 .loader {
@@ -1672,12 +1686,14 @@ section { padding: clamp(80px, 12vw, 180px) var(--gutter); position: relative; }
       try { modal.showModal(); } catch(e) { modal.setAttribute("open",""); }
     } else { modal.setAttribute("open",""); }
     modal.classList.add("is-open");
+    document.body.classList.add("modal-open");   // restores OS cursor for YouTube controls
     document.body.style.overflow = "hidden";
     // Now paint content (sets iframe.src once the iframe is actually rendered)
     paintModal(slug);
   }
   function closeModal() {
     modal.classList.remove("is-open");
+    document.body.classList.remove("modal-open");
     document.body.style.overflow = "";
     // stop video playback immediately
     modalVideo.src = "about:blank";
