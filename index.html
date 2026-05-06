@@ -577,6 +577,50 @@ section { padding: clamp(80px, 12vw, 180px) var(--gutter); position: relative; }
   text-align: right;
 }
 
+/* Browser/iPad-window mockup variant (for website projects) */
+.featured-art.is-window { aspect-ratio: 5 / 4; }
+.featured-art .window {
+  position: relative; z-index: 2;
+  width: 88%; aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  background: #14140e;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.08),
+    0 0 0 6px rgba(20,20,18,.85),
+    0 0 0 7px rgba(255,255,255,.06),
+    0 30px 80px -20px rgba(0,0,0,.7);
+  overflow: hidden;
+  transform: rotate(-1.2deg);
+  transition: transform .8s var(--easing-2);
+  display: grid; grid-template-rows: 30px 1fr;
+}
+.featured-art:hover .window { transform: rotate(0deg) translateY(-6px); }
+.featured-art .window-bar {
+  display: flex; align-items: center; gap: 7px;
+  padding: 0 14px;
+  background: #1a1a14;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  font: 500 10px/1 var(--mono);
+  color: var(--ink-mute);
+}
+.featured-art .window-bar i {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,.18);
+  flex-shrink: 0;
+}
+.featured-art .window-bar i:first-child { background: var(--accent); }
+.featured-art .window-bar .url {
+  margin: 0 auto; padding: 4px 14px;
+  background: rgba(0,0,0,.45); border-radius: 4px;
+  letter-spacing: .14em; text-transform: lowercase;
+  color: var(--ink);
+}
+.featured-art .window img {
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+}
+
 .featured-info { display: grid; grid-template-rows: auto 1fr auto; gap: 28px; }
 .featured-info h3 {
   font-family: var(--serif); font-weight: 300; font-style: italic;
@@ -1261,24 +1305,28 @@ section { padding: clamp(80px, 12vw, 180px) var(--gutter); position: relative; }
 <section id="featured">
   <div class="label reveal is-in" style="margin-bottom:32px">Featured Work · 002</div>
   <div class="featured">
-    <div class="featured-art reveal is-in">
+    <div class="featured-art is-window reveal is-in">
       <span class="blob"></span><span class="blob"></span>
-      <span class="pill">Rich Media · 2023</span>
-      <div class="device">
-        <img src="assets/work/lyriq.png" alt="Cadillac Lyriq rich-media unit by Edward Kang" loading="lazy">
+      <span class="pill">Website Design · 2026</span>
+      <div class="window">
+        <div class="window-bar" aria-hidden="true">
+          <i></i><i></i><i></i>
+          <span class="url">dsofood.com</span>
+        </div>
+        <img src="assets/work/dsofood.png" alt="DS OFood website redesign by Edward Kang" loading="lazy">
       </div>
-      <div class="corner">Cadillac Lyriq<br>320 × 480 · MRAID</div>
+      <div class="corner">DS OFood<br>iPad Pro · 2732 × 2048</div>
     </div>
 
     <div class="featured-info">
-      <h3 class="reveal is-in">An electric flagship, told in <em>five frames.</em></h3>
-      <p class="copy reveal is-in">A scrolling rich-media unit for the Cadillac Lyriq launch — synchronizing motion, type and product photography across a single 320×480 canvas. Built to feel less like an ad and more like a cinematic chapter, with each scene resolving to a hero feature.</p>
+      <h3 class="reveal is-in">A complete refresh, <em>shipped &amp; self-maintained.</em></h3>
+      <p class="copy reveal is-in">A full redesign of the DS OFood website — replacing a dated template with a clean editorial system the team can maintain themselves. Refined typography, an honest grid, and photography-forward layouts on a CMS the brand team extends without a designer or developer.</p>
       <div class="meta">
-        <div><b>Client</b>Cadillac · GM</div>
-        <div><b>Role</b>Art Direction · Design</div>
-        <div><b>Output</b>Rich-media unit · Storyboards</div>
+        <div><b>Client</b>DS OFood</div>
+        <div><b>Role</b>Designer · Direction</div>
+        <div><b>Output</b>Site redesign · Visual system · CMS hand-off</div>
       </div>
-      <a href="case-study.html?id=lyriq" class="cta">View Case Study
+      <a href="case-study.html?id=dsofood" class="cta">View Case Study
         <svg class="arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11 L11 3 M5 3 H11 V9"></path></svg>
       </a>
     </div>
